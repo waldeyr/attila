@@ -34,11 +34,11 @@ scales Use R function install.packages(“scales”)
 
 After installing all requirements, perform the following steps:
 
-1. Download ATTILA package at ...
+1. Download ATTILA package at https://github.com/waldeyr/attila/archive/master.zip
 
-2. Uncompress the tar.gz file using command line:
+2. Uncompress the zip file using command line:
 
-$ tar -vzxf attila-1.0.tar.gz
+$ unzip attila-master.zip
 
 3. Go to the directory where you want to install ATTILA, using cd command. Note that ATTILA and IgBlast packages must be subdirectories of the installation directory.
 
