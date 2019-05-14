@@ -13,24 +13,31 @@ Linux system
 
 Internet
 
-FASTQC http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+[FASTQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc)
 
-Prinseq-lite http://prinseq.sourceforge.net/
+[Prinseq-lite](http://prinseq.sourceforge.net)
 
-FastqJoin https://code.google.com/archive/p/ea-utils/
+[FastqJoin](https://code.google.com/archive/p/ea-utils)
 
-Perl https://www.perl.org/get.html
+[Perl](https://www.perl.org/get.html)
 
-IgBlast ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/
+[IgBlast](ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release)
 
-R package https://cran.r-project.org/
+[R software](https://cran.r-project.org)
 
-ggplot2 Use R function install.packages(“ggplot2”)
+R package ggplot2: use R function `install.packages("ggplot2")`
 
-scales Use R function install.packages(“scales”)
+R package scales: use R function `install.packages("scales")`
 
 
 ## Installation
+
+## Docker install
+
+If you are using [Docker](https://www.docker.com), you just need to download the [Dockerfile](https://github.com/waldeyr/attila/blob/master/Dockerfile) and type: `docker build -t attila-v1.0 .`.
+
+Then, to run it, type `docker run --memory="4096m" -ti waldeyr/attila-v1.0 bash`
+
 
 After installing all requirements, perform the following steps:
 
