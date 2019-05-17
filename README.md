@@ -21,7 +21,7 @@ Internet
 
 [Perl](https://www.perl.org/get.html)
 
-[IgBlast](ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release)
+[IgBlast](https://ftp.ncbi.nih.gov/blast/executables/igblast/release/)
 
 [R software](https://cran.r-project.org)
 
@@ -32,12 +32,15 @@ R package scales: use R function `install.packages("scales")`
 
 ## Installation
 
-## Docker install
+## Docker install (recommended)
 
-If you are using [Docker](https://www.docker.com), you just need to download the [Dockerfile](https://github.com/waldeyr/attila/blob/master/Dockerfile) and type: `docker build -t attila-v1.0 .`.
+If you are using [Docker](https://www.docker.com), you just need to download the [Dockerfile](https://github.com/waldeyr/attila/blob/master/Dockerfile) and type: `docker build -t waldeyr/attila:v1.0 .`.
 
-Then, to run it, type `docker run --memory="4096m" -ti waldeyr/attila-v1.0 bash`
+Then, just run: `docker run --memory="4096m" -ti waldeyr/attila:v1.0 bash`
 
+If you want to sharing a docker folder with your currently docker folder, run using: `docker run -v $(whoami)/$(pwd):/attila/shared --memory="2048m" -ti waldeyr/attila:v1.0 bash`
+
+## Linux install
 
 After installing all requirements, perform the following steps:
 
