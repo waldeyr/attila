@@ -22,9 +22,11 @@ RUN git clone https://github.com/waldeyr/attila.git attila-v1.0 && cd attila-v1.
 
 RUN ln -sf /attila/prinseq-lite-0.20.4/prinseq* . && ln -sf /attila/FastQC-0.11.8/fastqc . && ln -sf /attila/ncbi-igblast-1.14.0/bin/* .
 
+RUN cd /attila/attila-v1.0/programs/ && ln -sf /attila/ncbi-igblast-1.14.0/bin/* .
 RUN cd /usr/local/bin/ && ln -sf /attila/FastQC-0.11.8/fastqc .
 RUN cd /usr/local/bin/ && ln -sf /attila/ncbi-igblast-1.14.0/bin/* .
-RUN cd /attila/attila-v1.0/prgrams/ && ln -sf /attila/ncbi-igblast-1.14.0/bin/* .
 RUN cd /usr/local/bin/ && ln -sf /attila/prinseq-lite-0.20.4/prinseq-lite .
+RUN cd /attila/attila-v1.0/ && ./programs/check_requirements.sh
+RUN cd /attila/attila-v1.0 && ln -sf programs/* .
 
-RUN echo 'To run it, type: docker run -v $(whoami)/$(pwd):/attila/shared --memory="2048m" -ti waldeyr/attila:v1.0 bash'
+RUN echo 'To run it, type: docker run -v $(pwd):/attila/shared --memory="2048m" -ti waldeyr/attila:v1.0 bash'
