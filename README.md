@@ -38,7 +38,7 @@ If you are using [Docker](https://www.docker.com), you just need to download the
 
 Then, just run: `docker run --memory="4096m" -ti waldeyr/attila:v1.0 bash`
 
-If you want to sharing a docker folder with your currently docker folder, run using: `docker run -v $(whoami)/$(pwd):/attila/shared --memory="2048m" -ti waldeyr/attila:v1.0 bash`
+If you want to sharing a docker folder with your currently docker folder, run using: `docker run -v $(pwd):/attila/shared --memory="2048m" -ti waldeyr/attila:v1.0 bash`
 
 ## Linux install
 
