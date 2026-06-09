@@ -1,32 +1,57 @@
-FROM fedora:29
-MAINTAINER Waldeyr Mendes Cordeiro da Silva
+FROM python:3.13-slim-bookworm
+
+LABEL maintainer="Waldeyr Mendes Cordeiro da Silva"
+
 SHELL ["/bin/bash", "-c"]
-RUN mkdir attila 
-WORKDIR "attila"
 
-RUN dnf update -y && dnf install which nano git autoconf automake libtool gcc-c++ wget java-1.8.0-openjdk-devel R libnsl gsl-devel 'perl(App::Prove)' 'perl(Test::Builder)' -y
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/usr/local/bin:/opt/ncbi-igblast-1.22.0/bin:${PATH}"
 
-RUN Rscript -e 'install.packages("ggplot2", repos = "http://cran.us.r-project.org")'
+# Install system dependencies
+# fastqc: quality control (automatically installs Java dependency)
+# ea-utils: provides fastq-join directly
+# perl: required for running prinseq-lite
+# wget, tar, ca-certificates: tools for downloading and unpacking components
+# libgomp1: required by the compiled igblastp binary
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    fastqc \
+    ea-utils \
+    perl \
+    wget \
+    tar \
+    libgomp1 \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN Rscript -e 'install.packages("scales",  repos = "http://cran.us.r-project.org")'
+# Install prinseq-lite (standalone perl script)
+RUN wget --no-check-certificate https://sourceforge.net/projects/prinseq/files/standalone/prinseq-lite-0.20.4.tar.gz -O /tmp/prinseq.tar.gz \
+    && tar -xzf /tmp/prinseq.tar.gz -C /tmp \
+    && mv /tmp/prinseq-lite-0.20.4/prinseq-lite.pl /usr/local/bin/prinseq-lite \
+    && chmod +x /usr/local/bin/prinseq-lite \
+    && rm -rf /tmp/prinseq*
 
-RUN wget https://github.com/s-andrews/FastQC/archive/v0.11.8.tar.gz -O fastqc.tar.gz && tar -xf fastqc.tar.gz && chmod +x FastQC-0.11.8/fastqc && rm fastqc.tar.gz -f
+# Install NCBI IgBlast v1.22.0
+RUN mkdir -p /opt \
+    && wget ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/1.22.0/ncbi-igblast-1.22.0-x64-linux.tar.gz -O /tmp/igblast.tar.gz \
+    && tar -xzf /tmp/igblast.tar.gz -C /opt \
+    && chmod +x /opt/ncbi-igblast-1.22.0/bin/* \
+    && rm -f /tmp/igblast.tar.gz
 
-RUN wget https://sourceforge.net/projects/prinseq/files/standalone/prinseq-lite-0.20.4.tar.gz -O prinseq-lite.tar.gz && tar -xf prinseq-lite.tar.gz && mv prinseq-lite-0.20.4/prinseq-lite.pl prinseq-lite-0.20.4/prinseq-lite && chmod +x prinseq-lite-0.20.4/prinseq* && rm prinseq-lite.tar.gz -f
+# Set up working directory inside the container
+WORKDIR /app
 
-RUN git clone https://github.com/ExpressionAnalysis/ea-utils.git && cd /attila/ea-utils/clipper && CC=g++ PREFIX=/usr/local make install
+# Copy requirements and install python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN wget ftp://ftp.ncbi.nih.gov/blast/executables/igblast/release/1.14.0/ncbi-igblast-1.14.0-x64-linux.tar.gz -O igblast.tar.gz && tar -xf igblast.tar.gz && chmod +x ncbi-igblast-1.14.0/bin/* && rm igblast.tar.gz -f
+# Copy all project files into the container
+COPY . .
+RUN chmod +x run.sh install.sh programs/*.py
 
-RUN git clone https://github.com/waldeyr/attila.git attila-v1.0 && cd attila-v1.0 && chmod +x programs/*
+# Validate installation: runs pre-flight checks at build time
+# Build fails here if any required tool is missing from the image
+RUN python3 programs/test_attila.py TestInstallation -v
 
-RUN ln -sf /attila/prinseq-lite-0.20.4/prinseq* . && ln -sf /attila/FastQC-0.11.8/fastqc . && ln -sf /attila/ncbi-igblast-1.14.0/bin/* .
-
-RUN cd /attila/attila-v1.0/programs/ && ln -sf /attila/ncbi-igblast-1.14.0/bin/* .
-RUN cd /usr/local/bin/ && ln -sf /attila/FastQC-0.11.8/fastqc .
-RUN cd /usr/local/bin/ && ln -sf /attila/ncbi-igblast-1.14.0/bin/* .
-RUN cd /usr/local/bin/ && ln -sf /attila/prinseq-lite-0.20.4/prinseq-lite .
-RUN cd /attila/attila-v1.0/ && ./programs/check_requirements.sh
-RUN cd /attila/attila-v1.0 && ln -sf programs/* .
-
-RUN echo 'To run it, type: docker run -v $(pwd):/attila/shared --memory="2048m" -ti waldeyr/attila:v1.0 bash'
+# Command to run bash by default
+CMD ["/bin/bash"]

@@ -1,0 +1,13 @@
+As sequências na tabela Regions of Variable Domain estão vazias porque o arquivo de classificação do IgBLAST (vhlist5numberedgermlineclassification.txt) está vazio (com 0 bytes).
+
+Por que esse arquivo está vazio?
+Quando você executa o pipeline de demonstração (run.sh --example ou no modo de testes):
+
+O ATTILA verifica se a ferramenta IgBLAST (igblastp) está instalada no sistema.
+Se o IgBLAST não estiver instalado no PATH do seu computador, o pipeline entra em modo fallback (Python-only) e pula a etapa de classificação de germline.
+Para que a compilação do relatório HTML não falhe devido a arquivos faltantes, o script wrapper cria arquivos de germline em branco (usando touch).
+Como esses arquivos estão em branco, o html_creator.py não encontra informações de limites para as regiões FR1, CDR1, FR2, CDR2 e FR3, deixando essas células em branco no relatório.
+Como ver as regiões preenchidas?
+Com dados reais: Se você estiver rodando o pipeline real com o IgBLAST instalado e configurado no arquivo .cfg (usando o parâmetro igblastdir), o igblastp será executado normalmente, preenchendo as regiões variáveis e exibindo as sequências coloridas no relatório.
+No modo de exemplo: Se você desejar ver como fica o relatório populado de exemplo, é necessário ter o executável do igblastp instalado e acessível no PATH do seu terminal.
+Caso queira, posso criar um script para simular dados de IgBLAST de exemplo para que você possa visualizar o relatório completamente preenchido e colorido, mesmo sem o IgBLAST instalado. Gostaria que eu fizesse isso?
