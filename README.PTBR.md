@@ -9,6 +9,22 @@
 > * Para a versão em inglês deste arquivo, veja o [README.md](README.md).
 > * Para consultar o manual de usuário detalhado da ferramenta, acesse o [MANUAL.md](MANUAL.md).
 
+## Publicação Original
+
+Esta ferramenta é uma versão atualizada do ATTILA, originalmente publicado em:
+
+**Discovering Selected Antibodies From Deep-Sequenced Phage-Display Antibody Library Using ATTILA**
+
+Andréa Queiroz Maranhão, Heidi Muniz Silva, Waldeyr Mendes Cordeiro da Silva, Renato Kaylan Alves França, Thais Canassa De Leo, Marcelo Dias-Baruffi, Rafael Trindade Burtet, Marcelo Macedo Brigido
+
+*Bioinformatics and Biology Insights*, 2020. DOI: [10.1177/1177932220915240](https://doi.org/10.1177/1177932220915240)
+
+### Resumo
+
+O Phage display é uma técnica poderosa para selecionar anticorpos de alta afinidade para diferentes finalidades, incluindo biofármacos. O sequenciamento de nova geração (NGS) apresentou-se como uma solução robusta, tornando possível avaliar bilhões de sequências dos domínios variáveis de subbibliotecas selecionadas. Ao lidar com esse processo, uma dificuldade central é encontrar os clones selecionados. Aqui, apresentamos o AutomaTed Tool For Immunoglobulin Analysis (ATTILA), uma nova ferramenta para analisar e encontrar os domínios variáveis enriquecidos ao longo de um experimento de biopanning. O ATTILA é um fluxo de trabalho que combina ferramentas publicamente disponíveis e programas e scripts desenvolvidos internamente para encontrar a frequência de fold-change de amplicons profundamente sequenciados gerados a partir de domínios VH e VL selecionados. Analisamos os mesmos dados de NGS de uma biblioteca humana de Fab usando o ATTILA em 5 experimentos diferentes, bem como em 2 experimentos de biopanning quanto a desempenho, precisão e saída. Essas análises mostraram-se adequadas para avaliar a variabilidade da biblioteca e listar os domínios variáveis mais enriquecidos, pois o ATTILA fornece um relatório com a sequência de aminoácidos de cada domínio identificado, juntamente com suas regiões determinantes de complementaridade (CDRs), classificação de linhagem germinativa e fold change. Por fim, os métodos aqui empregados demonstraram uma maneira adequada de combinar a geração de amplicons e a análise de dados de NGS para descobrir novos anticorpos monoclonais (mAbs).
+
+---
+
 ## Resumo do projeto
 O **ATTILA** (AutomaTed Tool For Immunoglobulin Analysis) é um pipeline de bioinformática projetado para buscar e selecionar clones candidatos de imunoglobulinas (VH e VL) a partir de bibliotecas geradas por experimentos de Phage Display. Originalmente construído com uma fragmentação de Perl, scripts estatísticos R e binários proprietários em C, o sistema foi inteiramente reescrito e consolidado em **Python 3 nativo** para garantir portabilidade multiplataforma total (Windows, Linux, macOS), robustez na execução de etapas e independência de interpretadores adicionais desnecessários.
 
