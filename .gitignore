@@ -1,2 +1,7 @@
 example_output
 programs/__pycache__/
+short-paper-bsb/*
+__pycache__/
+.pytest_cache/
+.coverage
+.venv/

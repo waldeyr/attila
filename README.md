@@ -244,6 +244,20 @@ python3 programs/test_attila.py -v
 | `TestInstallation` | Python version, pip packages, CLI tools in PATH, required data files |
 | `TestAttilaPipeline` | DNA functions, 6-frame translation, Z-test statistics, full VH+VL pipeline end-to-end |
 
+#### Developer test suite (pytest)
+
+The `tests/` directory holds a broader pytest suite. It checks computed values (CDR3 detection, fold changes, z-test p-values and confidence intervals, read counts, HTML report contents) and runs the whole pipeline on the synthetic dataset with the external tools and the Abnum web service mocked, so it needs neither the bioinformatics binaries nor network access.
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements-dev.txt
+.venv/bin/pytest                       # unit + mocked end-to-end tests
+.venv/bin/pytest -m tools              # also run prinseq-lite, fastqc and igblastp for real (skipped if absent)
+.venv/bin/pytest --cov=programs --cov-report=term-missing
+```
+
+Known defects are recorded in `tests/test_known_bugs.py` as strict `xfail` tests (reported as `XFAIL`). Once a defect is fixed, its test starts passing and is reported as a failure until the `xfail` marker is removed.
+
 ---
 
 ### Option 2: Running with Docker (Recommended for reproducible environments)

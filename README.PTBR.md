@@ -244,6 +244,20 @@ python3 programs/test_attila.py -v
 | `TestInstallation` | Versão do Python, pacotes pip, ferramentas CLI no PATH, arquivos de dados obrigatórios |
 | `TestAttilaPipeline` | Funções de DNA, tradução em 6 frames, estatísticas Z-test, pipeline completo VH+VL de ponta a ponta |
 
+#### Suíte de testes para desenvolvimento (pytest)
+
+O diretório `tests/` contém uma suíte pytest mais ampla. Ela verifica valores calculados (detecção da CDR3, fold changes, p-valores e intervalos de confiança do z-test, contagens de reads, conteúdo do relatório HTML) e executa o pipeline completo sobre os dados sintéticos com as ferramentas externas e o serviço Abnum simulados, sem precisar dos binários de bioinformática nem de acesso à rede.
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements-dev.txt
+.venv/bin/pytest                       # testes unitários + ponta a ponta simulados
+.venv/bin/pytest -m tools              # roda também prinseq-lite, fastqc e igblastp reais (pulados se ausentes)
+.venv/bin/pytest --cov=programs --cov-report=term-missing
+```
+
+Defeitos conhecidos estão registrados em `tests/test_known_bugs.py` como testes `xfail` estritos (aparecem como `XFAIL`). Quando um defeito for corrigido, o teste correspondente passa e é reportado como falha até que o marcador `xfail` seja removido.
+
 ---
 
 ### Opção 2: Executando com Docker (Recomendado para ambientes reproduzíveis)
